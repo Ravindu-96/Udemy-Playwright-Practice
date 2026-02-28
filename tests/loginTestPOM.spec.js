@@ -1,6 +1,7 @@
 import { test, expect } from "@playwright/test";
 import LoginPage from "../pageobjets/LoginPage";
 import DashboardPage from "../pageobjets/DashboardPage";
+import CartPage from "../pageobjets/CartPage";
 
 test.only("Add to Cart", async ({ page }) => {
   const selectedProduct = "ZARA COAT 3";
@@ -12,15 +13,10 @@ test.only("Add to Cart", async ({ page }) => {
   await dashboardPage.addProductToCart(selectedProduct);
   await dashboardPage.navigateToCart();
 
-  // Wait for the cart section to load and contain elements
-  const cartItems = page.locator(".cartSection h3");
-  await cartItems.first().waitFor(); // Ensure at least one item is loaded
-
-  // Assert that one of the cart item headers contains the selected product text
-  await expect(cartItems).toContainText(selectedProduct);
-
-  // Click on the checkout button
-  await page.locator("text=Checkout").click();
+  const cartPage = new CartPage(page);
+  const cartTexts = await cartPage.getCartItemsText();
+  expect(cartTexts).toContain(selectedProduct);
+  await cartPage.clickCheckout();
 
   await page.locator("[placeholder='Select Country']").pressSequentially("Sr",{ delay: 100 });
   await page.getByRole('button', { name: ' Sri Lanka' }).click();
