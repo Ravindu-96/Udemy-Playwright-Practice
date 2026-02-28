@@ -1,19 +1,18 @@
 import { test, expect } from "@playwright/test";
-import LoginPage from "../pageobjets/LoginPage";
-import DashboardPage from "../pageobjets/DashboardPage";
-import CartPage from "../pageobjets/CartPage";
+import POManager from "../pageobjets/POManager";
 
 test.only("Add to Cart", async ({ page }) => {
   const selectedProduct = "ZARA COAT 3";
 
-  const loginPage = new LoginPage(page);
+  const poManager = new POManager(page);
+  const loginPage = poManager.getLoginPage();
   await loginPage.validLogin("96nextgen99@gmail.com", "Auto@2026");
 
-  const dashboardPage = new DashboardPage(page);
+  const dashboardPage = poManager.getDashboardPage();
   await dashboardPage.addProductToCart(selectedProduct);
   await dashboardPage.navigateToCart();
 
-  const cartPage = new CartPage(page);
+  const cartPage = poManager.getCartPage();
   const cartTexts = await cartPage.getCartItemsText();
   expect(cartTexts).toContain(selectedProduct);
   await cartPage.clickCheckout();
