@@ -6,7 +6,7 @@ class CartPage {
         this.countryDropdown = page.locator("[placeholder='Select Country']");
         this.submitButton = page.locator(".action__submit");
         this.orderConfirmationText = page.locator("h1.hero-primary");
-        this.orderIdLabel = page.locator("label.ng-star-inserted");
+        this.orderIdLabel = page.locator("label.ng-star-inserted").last();
     }
     async getCartItemsText() {
         await this.cartItems.first().waitFor();
