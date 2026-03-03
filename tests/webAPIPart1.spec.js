@@ -3,7 +3,7 @@
 // It uses a utility class to handle API interactions and maintains the authentication token across tests by injecting it into the browser's local storage.
 
 import { test, expect, request } from "@playwright/test";
-import APIUtils from "./utils/APIUtils";
+import APIUtils from "../utils/APIUtils";
 
 const LoginPayload = {
     userEmail: "96nextgen99@gmail.com",

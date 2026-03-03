@@ -1,12 +1,16 @@
 import { test, expect } from "@playwright/test";
 import POManager from "../pageobjets/POManager";
 
+// JSON --> String --> Object
+import loginTestData from "../utils/loginTestPOMTestData.json";
+const testData = JSON.parse(JSON.stringify(loginTestData));
+
 test.only("Add to Cart", async ({ page }) => {
-  const selectedProduct = "ZARA COAT 3";
+  const selectedProduct = testData.productName;
 
   const poManager = new POManager(page);
   const loginPage = poManager.getLoginPage();
-  await loginPage.validLogin("96nextgen99@gmail.com", "Auto@2026");
+  await loginPage.validLogin(testData.userName, testData.password);
 
   const dashboardPage = poManager.getDashboardPage();
   await dashboardPage.addProductToCart(selectedProduct);
