@@ -3,7 +3,7 @@ import POManager from "../pageobjets/POManager";
 import { customtest } from "../utils/test-base";
 
 // Using custom test with fixtures
-customtest.only("Add to Cart", async ({ page, testData }) => {
+customtest("Add to Cart @web", async ({ page, testData }) => {
   const selectedProduct = testData.productName;
   console.log("Custom Fixture Data:", testData);
 

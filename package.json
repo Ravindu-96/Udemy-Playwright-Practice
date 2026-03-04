@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "npx playwright test webAPIPart1.spec.js"
+    "regressionTest": "npx playwright test",
+    "webTest": "npx playwright test --grep @web",
+    "mobileTest": "npx playwright test --grep @mobile"
   },
   "keywords": [],
   "author": "",
