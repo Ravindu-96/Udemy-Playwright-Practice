@@ -16,6 +16,7 @@
     "@types/node": "^25.2.3"
   },
   "dependencies": {
-    "exceljs": "^4.4.0"
+    "exceljs": "^4.4.0",
+    "mailosaur": "^11.0.3"
   }
 }
