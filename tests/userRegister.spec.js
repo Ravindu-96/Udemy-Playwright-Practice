@@ -1,25 +1,50 @@
 import { test, expect } from '@playwright/test';
 import { getOtpFromEmail } from '../utils/OtpMail';
+import POManager from '../pageobjets/POManager';
+
+// Generate a unique email for each test run to avoid conflicts
+const generateUniqueEmail = () => {
+    const timestamp = Date.now();
+    return `test${timestamp}@bivou0qb.mailosaur.net`;
+};
 
 const userData = {
-    email: 'test05@bivou0qb.mailosaur.net',
     password: '2026@QA@mail'
 };
 
-// This test simulates user registration on the playground.mailslurp.com website, including filling out the registration form and confirming the account with an OTP code.
+// This test simulates user registration on the playground.mailslurp.com website,
+// including filling out the registration form and confirming the account with an OTP code.
+// It uses the Page Object Model (POM) pattern for better maintainability.
 test('User Registration', async ({ page }) => {
-    await page.goto('https://playground.mailslurp.com/');
+    // Generate a unique email for this test run
+    const uniqueEmail = generateUniqueEmail();
 
-    await page.locator('[data-test="sign-in-create-account-link"]').click();
+    // Initialize Page Object Manager
+    const poManager = new POManager(page);
+    const registerPage = poManager.getRegisterPage();
 
-    await page.locator('input[name="email"]').fill(userData.email);
-    await page.locator('input[name="password"]').fill(userData.password);
+    // Navigate to the registration page
+    await registerPage.goToRegistrationPage();
 
-    await page.locator('[data-test="sign-up-create-account-button"]').click();
+    // Click the create account link
+    await registerPage.clickCreateAccountLink();
 
-    const otpCode = await getOtpFromEmail(userData.email);
-    await page.locator('[data-test="confirm-sign-up-confirmation-code-input"]').fill(otpCode);
+    // Fill the registration form
+    await registerPage.fillRegistrationForm(uniqueEmail, userData.password);
 
-    await page.locator('[data-test="confirm-sign-up-confirm-button"]').click();
-    await expect(page.locator('[data-test="sign-in-sign-in-button"]')).toBeVisible();
+    // Submit the registration form
+    await registerPage.submitRegistrationForm();
+
+    // Retrieve OTP from email
+    const otpCode = await getOtpFromEmail(uniqueEmail);
+
+    // Fill the OTP code
+    await registerPage.fillOtpCode(otpCode);
+
+    // Confirm the registration
+    await registerPage.confirmRegistration();
+
+    // Verify successful registration by checking if sign-in button is visible
+    const signInButton = await registerPage.getSignInButton();
+    await expect(signInButton).toBeVisible();
 });

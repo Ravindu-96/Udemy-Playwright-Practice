@@ -2,6 +2,7 @@ import CartPage from "./CartPage";
 import DashboardPage from "./DashboardPage";
 import LoginPage from "./LoginPage";
 import OrdersPage from "./OrdersPage";
+import RegisterPage from "./RegisterPage";
 
 class POManager {
     constructor(page) {
@@ -10,6 +11,7 @@ class POManager {
         this.dashboardPage = new DashboardPage(page);
         this.cartPage = new CartPage(page);
         this.ordersPage = new OrdersPage(page);
+        this.registerPage = new RegisterPage(page);
     }
     getLoginPage() {
         return this.loginPage;
@@ -22,6 +24,9 @@ class POManager {
     }
     getOrdersPage() {
         return this.ordersPage;
+    }
+    getRegisterPage() {
+        return this.registerPage;
     }
 }
 
